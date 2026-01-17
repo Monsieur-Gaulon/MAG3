@@ -123,16 +123,8 @@ function startQrScanner() {
     qrScanner.start(
       { deviceId: { exact: cameraId } },
       { fps: 10, qrbox: 250 },
-      decodedText => {
-  const code = decodedText.trim().toUpperCase();
-
-  qrScanner.stop();
-  closeQRScanner();
-
-  askQuestion(code);
-}
-    );
-  });
+  decodedText => {
+  alert("QR lu : " + decodedText);
 }
 	  function closeQRScanner() {
   if (qrScanner) {
@@ -180,3 +172,4 @@ function askQuestion(code) {
   </script>
 </body>
 </html>
+
