@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Code Interface</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background-color: #f9f9f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      color: #333;
+    }
+    header {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    header img {
+      width: 400px;
+      height: auto;
+    }
+    h1 {
+      margin: 1rem 0;
+      font-size: 1.8rem;
+    }
+    input[type="text"] {
+      padding: 0.8rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 500px;
+      margin-bottom: 1rem;
+    }
+    button {
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background-color: #444;
+      color: white;
+      margin: 0.5rem;
+    }
+    #question-box {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      border-radius: 12px;
+      max-width: 600px;
+      width: 100%;
+      display: none;
+      text-align: center;
+      font-size: 1.3rem;
+    }
+    .reveal {
+      margin-top: 1rem;
+      font-weight: bold;
+      display: none;
+    }
+    .category-CA { background-color: #000; color: white; }
+
+    .button-row {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="https://i.postimg.cc/63QLrWWx/logo.png" alt="Logo Quiz">
+    <h1>Recherche de question par code</h1>
+   <input type="text" id="codeInput" placeholder="Entrez un code (ex : CA1)">
+    <button onclick="searchQuestion()">Valider</button>
+    <button onclick="resetPage()">Nouvelle recherche</button>
+	<button onclick="openQRScanner()">📷 Scan QR</button>
+  </header>
+
+  <div id="question-box" class="">
+    <div id="question-text"></div>
+    <div class="button-row">
+      <button onclick="revealAnswer()">Réponse</button>
+      <button onclick="searchQuestion()">Nouvelle question</button>
+      <button onclick="resetPage()">Changer de code</button>
+    </div>
+    <div id="answer-text" class="reveal"></div>
+  </div>
+  <div id="qr-overlay" style="display:none">
+  <div id="qr-reader" style="width:300px"></div>
+  <button onclick="closeQRScanner()">Fermer</button>
+</div>
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+  <script>
+
+let qrScanner;
+
+function openQRScanner() {
+  document.getElementById("qr-overlay").style.display = "block";
+
+  setTimeout(() => {
+    startQrScanner();
+  }, 300);
+}
+
+function startQrScanner() {
+  qrScanner = new Html5Qrcode("qr-reader");
+
+  Html5Qrcode.getCameras().then(cameras => {
+    let backCamera = cameras.find(cam =>
+      cam.label.toLowerCase().includes("back") ||
+      cam.label.toLowerCase().includes("rear")
+    );
+
+    const cameraId = backCamera ? backCamera.id : cameras[cameras.length - 1].id;
+
+    qrScanner.start(
+      { deviceId: { exact: cameraId } },
+      { fps: 10, qrbox: 250 },
+      decodedText => {
+  const code = decodedText.trim().toUpperCase();
+
+  qrScanner.stop();
+  closeQRScanner();
+
+  askQuestion(code);
+}
+    );
+  });
+}
+	  function closeQRScanner() {
+  if (qrScanner) {
+    qrScanner.stop().catch(() => {});
+  }
+  document.getElementById("qr-overlay").style.display = "none";
+}
+  
+    const data = {
+      CA1: [
+        { q: "Conjugue 'manger' à la 1re personne du singulier.", a: "Je mange." },
+        { q: "Conjugue 'finir' à la 3e personne du pluriel.", a: "Ils finissent." },
+        { q: "Conjugue 'prendre' à la 2e personne du singulier.", a: "Tu prends." }
+      ]
+          };
+
+    function searchQuestion() {
+  askQuestion("CA1");
+}
+    
+   let currentQuestion = null;
+
+function askQuestion(code) {
+  const list = data[code];
+
+  if (!list || list.length === 0) {
+    alert("Aucune question trouvée pour : " + code);
+    return;
+  }
+
+  const q = list[Math.floor(Math.random() * list.length)];
+  currentQuestion = q;
+
+  document.getElementById("question-text").textContent = q.q;
+  document.getElementById("answer-text").style.display = "none";
+  document.getElementById("question-box").style.display = "block";
+}
+    function revealAnswer() {
+  if (!currentQuestion) return;
+  const el = document.getElementById("answer-text");
+  el.textContent = currentQuestion.a;
+  el.style.display = "block";
+};
+
+  </script>
+</body>
+</html>
