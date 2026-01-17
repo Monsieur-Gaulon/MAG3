@@ -91,7 +91,7 @@
     <div id="answer-text" class="reveal"></div>
   </div>
   <div id="qr-overlay" style="display:none">
-  <div id="qr-reader" style="width:300px"></div>
+  <div id="qr-reader" style="width:300px; display:none;"></div>
   <button onclick="closeQRScanner()">Fermer</button>
 </div>
 
@@ -99,40 +99,31 @@
 
   <script>
 
-let qrScanner;
+let qrScanner = null;
 
 function openQRScanner() {
-  document.getElementById("qr-overlay").style.display = "block";
+  const el = document.getElementById("qr-reader");
+  el.style.display = "block";
 
-  setTimeout(() => {
-    startQrScanner();
-  }, 300);
-}
-
-function startQrScanner() {
-  qrScanner = new Html5Qrcode("qr-reader");
-
-  Html5Qrcode.getCameras().then(cameras => {
-    let backCamera = cameras.find(cam =>
-      cam.label.toLowerCase().includes("back") ||
-      cam.label.toLowerCase().includes("rear")
-    );
-
-    const cameraId = backCamera ? backCamera.id : cameras[cameras.length - 1].id;
-
-    qrScanner.start(
-      { deviceId: { exact: cameraId } },
-      { fps: 10, qrbox: 250 },
-  decodedText => {
-  alert("QR lu : " + decodedText);
-}
-	  function closeQRScanner() {
-  if (qrScanner) {
-    qrScanner.stop().catch(() => {});
+  if (!qrScanner) {
+    qrScanner = new Html5Qrcode("qr-reader");
   }
-  document.getElementById("qr-overlay").style.display = "none";
+
+  qrScanner.start(
+    { facingMode: "environment" },
+    { fps: 10, qrbox: 250 },
+    qrText => {
+      alert("QR détecté : " + qrText);
+
+      qrScanner.stop();
+      el.style.display = "none";
+
+      askQuestion(qrText.trim().toUpperCase());
+    },
+    err => {}
+  );
 }
-  
+
     const data = {
       CA1: [
         { q: "Conjugue 'manger' à la 1re personne du singulier.", a: "Je mange." },
@@ -148,12 +139,8 @@ function startQrScanner() {
    let currentQuestion = null;
 
 function askQuestion(code) {
-  const list = data[code];
-
-  if (!list || list.length === 0) {
-    alert("Aucune question trouvée pour : " + code);
-    return;
-  }
+  alert("askQuestion appelée avec : " + code);
+}
 
   const q = list[Math.floor(Math.random() * list.length)];
   currentQuestion = q;
@@ -172,4 +159,5 @@ function askQuestion(code) {
   </script>
 </body>
 </html>
+
 
