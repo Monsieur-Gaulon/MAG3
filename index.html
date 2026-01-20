@@ -147,9 +147,8 @@ function openQRScanner() {
 		  
         //qrScanner.stop();
         //closeQRScanner();
-        //askQuestion(decodedText);
-rDecodedText.innerHTML=decodedText;
-console.log(decodedText);
+		  document.getElementById('codeInput').innerHTML=decodedText;
+         searchQuestion();
       },
       errorMessage => {
         // erreurs normales de scan, on ignore
@@ -1558,6 +1557,7 @@ OA2: [
   </script>
 </body>
 </html>
+
 
 
 
