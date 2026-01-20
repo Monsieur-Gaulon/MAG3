@@ -142,10 +142,9 @@ function openQRScanner() {
       { fps: 10, qrbox: 250 },
       decodedText => {
 		  
-        //qrScanner.stop();
-        //closeQRScanner();
-		  document.getElementById('codeInput').innerHTML=decodedText;
-         searchQuestion(decodedText);
+        qrScanner.stop();
+        closeQRScanner();
+		searchQuestion(decodedText);
       },
       errorMessage => {
         // erreurs normales de scan, on ignore
@@ -1557,6 +1556,7 @@ OA2: [
   </script>
 </body>
 </html>
+
 
 
 
