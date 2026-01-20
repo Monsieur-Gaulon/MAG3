@@ -144,8 +144,8 @@ function openQRScanner() {
       { deviceId: { exact: cameraId } },
       { fps: 10, qrbox: 250 },
       decodedText => {
-        qrScanner.stop();
-        closeQRScanner();
+        //qrScanner.stop();
+        //closeQRScanner();
         //askQuestion(decodedText);
 rDecodedText.innerHTML=decodedText;
 console.log(decodedText);
@@ -1556,6 +1556,7 @@ OA2: [
   </script>
 </body>
 </html>
+
 
 
 
