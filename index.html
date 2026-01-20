@@ -139,7 +139,7 @@ function openQRScanner() {
 
     // 2️⃣ Si non trouvée, prendre la dernière caméra (souvent la meilleure)
     const cameraId = backCamera ? backCamera.id : cameras[cameras.length - 1].id;
-  var result="";
+  var result="vide";
     qrScanner.start(
       { deviceId: { exact: cameraId } },
       { fps: 10, qrbox: 250 },
@@ -148,8 +148,8 @@ function openQRScanner() {
         //qrScanner.stop();
         //closeQRScanner();
         //askQuestion(decodedText);
-rDecodedText.innerHTML=decodedText;
-console.log(decodedText);
+//rDecodedText.innerHTML=decodedText;
+//console.log(decodedText);
       },
       errorMessage => {
         // erreurs normales de scan, on ignore
@@ -1558,6 +1558,7 @@ OA2: [
   </script>
 </body>
 </html>
+
 
 
 
