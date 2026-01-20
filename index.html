@@ -139,11 +139,12 @@ function openQRScanner() {
 
     // 2️⃣ Si non trouvée, prendre la dernière caméra (souvent la meilleure)
     const cameraId = backCamera ? backCamera.id : cameras[cameras.length - 1].id;
-
+  var result="";
     qrScanner.start(
       { deviceId: { exact: cameraId } },
       { fps: 10, qrbox: 250 },
       decodedText => {
+		  result=decodedText;
         //qrScanner.stop();
         //closeQRScanner();
         //askQuestion(decodedText);
@@ -161,6 +162,7 @@ console.log(decodedText);
     console.error("Erreur récupération caméras :", err);
     alert("Accès caméra refusé.");
   });
+	rDecodedText.innerHTML="resultat après"+result;
 }
 
 	  function closeQRScanner() {
@@ -1556,6 +1558,7 @@ OA2: [
   </script>
 </body>
 </html>
+
 
 
 
