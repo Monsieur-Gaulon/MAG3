@@ -93,9 +93,7 @@
 	<button onclick="openQRScanner()">📷 Scan QR</button>
   </header>
 
-<hr>
-<div id="rqrcode">test du QR Code C'eest ici!</div>	
-<hr>
+
 	
   <div id="question-box" class="">
     <div id="question-text"></div>
@@ -148,7 +146,7 @@ function openQRScanner() {
         //qrScanner.stop();
         //closeQRScanner();
 		  document.getElementById('codeInput').innerHTML=decodedText;
-         searchQuestion();
+         searchQuestion(decodedText);
       },
       errorMessage => {
         // erreurs normales de scan, on ignore
@@ -1516,8 +1514,11 @@ OA2: [
 ]
           };
 
-    function searchQuestion() {
-      const input = document.getElementById('codeInput').value.toUpperCase();
+    function searchQuestion(leCode) {
+      var input = document.getElementById('codeInput').value.toUpperCase();
+		if (leCode!=""){
+			input = leCode;
+		}
       const category = input.slice(0, 2);
       const box = document.getElementById('question-box');
       const questionText = document.getElementById('question-text');
@@ -1557,6 +1558,7 @@ OA2: [
   </script>
 </body>
 </html>
+
 
 
 
