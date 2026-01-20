@@ -123,6 +123,7 @@ function openQRScanner() {
   qrScanner = new Html5Qrcode("qr-reader");
 
  var rDecodedText= document.getElementById("rqrcode");
+	rDecodedText.innerHTML="lecture du code";
   Html5Qrcode.getCameras().then(cameras => {
     if (!cameras || cameras.length === 0) {
       alert("Aucune caméra détectée.");
@@ -1555,6 +1556,7 @@ OA2: [
   </script>
 </body>
 </html>
+
 
 
 
