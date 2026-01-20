@@ -93,6 +93,10 @@
 	<button onclick="openQRScanner()">📷 Scan QR</button>
   </header>
 
+<hr>
+<div id="rqrcode"></div>	
+<hr>
+	
   <div id="question-box" class="">
     <div id="question-text"></div>
     <div class="button-row">
@@ -118,7 +122,7 @@ function openQRScanner() {
 
   qrScanner = new Html5Qrcode("qr-reader");
 
- var rDecodedText="";
+ var rDecodedText= document.getElementById("rqrcode");
   Html5Qrcode.getCameras().then(cameras => {
     if (!cameras || cameras.length === 0) {
       alert("Aucune caméra détectée.");
@@ -142,7 +146,7 @@ function openQRScanner() {
         qrScanner.stop();
         closeQRScanner();
         //askQuestion(decodedText);
-rDecodedText=decodedText;
+rDecodedText.innerHTML=decodedText;
 console.log(decodedText);
       },
       errorMessage => {
@@ -1551,4 +1555,5 @@ OA2: [
   </script>
 </body>
 </html>
+
 
