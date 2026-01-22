@@ -1512,10 +1512,11 @@ OA2: [
 ]
           };
 
-    function searchQuestion(String leCode) {
+    function searchQuestion(leCode) {
+		
       var input = document.getElementById('codeInput').value.toUpperCase();
-		if (leCode!=""){
-			input = leCode.toUpperCase();
+		if (String(leCode)!=""){
+			input = String(leCode).toUpperCase();
 		}
       const category = input.slice(0, 2);
       const box = document.getElementById('question-box');
@@ -1556,6 +1557,7 @@ OA2: [
   </script>
 </body>
 </html>
+
 
 
 
